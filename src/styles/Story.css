@@ -1,0 +1,135 @@
+.story {
+	display: flex;
+	justify-content: center;
+	margin: 100px;
+}
+
+.story-header {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+    position: fixed;
+    top: 50px;
+    left: 50px;
+}
+
+.story-header a {
+	text-decoration: none;
+	color: black;
+	font-size: 30px;
+	padding: 20px 0px;
+	-moz-transition: all 0.5s;
+	-webkit-transition: all 0.5s;
+	-o-transition: all 0.5s;
+	transition: all 0.5s;
+}
+
+.story-header a:hover {
+	-webkit-transform: skewX(20deg);
+	-moz-transform: skewX(20deg);
+	-o-transform: skewX(20deg);
+	transform: skewX(20deg);
+}
+
+.story-card {
+	color: white;
+	background-color: #0530AD;
+	font-family: "GT Pressura Mono";
+	width: 250px !important;
+	min-height: 250px !important;
+	height: fit-content;
+	text-align: right;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.story-card h1 {
+	font-weight: normal;
+	font-size: 50px;
+	line-height: 95%;
+	padding: 15px;
+}
+
+.story-card h4 {
+	font-family: "GT Pressura Mono Text";
+	font-size: 30px;
+	font-style: italic;
+	font-weight: normal;
+	margin: 15px;
+}
+
+.story-chat {
+	display: flex;
+	flex-direction: column;
+	min-width: 650px !important;
+	max-width: 650px !important;
+	padding: 0px 100px;
+	font-family: "GT Planar";
+	font-weight: 300;
+	font-size: 24px;
+}
+
+.chat-message {
+	padding: 15px 0px;
+}
+
+.chat-message p {
+	margin: 0;
+	white-space: pre-wrap;
+}
+
+.chat-message.system {
+	text-align: left;
+}
+
+.chat-message.user {
+	text-align: right;
+}
+
+.chat-content .image-container {
+	background-color: #E7CF9A;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 20px 0px;
+}
+
+.chat-content img{
+	width: 600px;
+	padding: 25px 0px;
+}
+
+.fade-in {
+	animation: fadeIn .5s;
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+.input-message {
+	text-align: right;
+	padding: 15px 0px;
+}
+
+.input-message input {
+	border: none;
+	font-family: "GT Planar";
+	font-weight: 300;
+	font-size: 24px;
+	text-align: right;
+}
+
+.input-message input:focus-visible {
+	outline: none;
+}
+
+.input-message input#placeholder {
+	color: #808080;		
+}

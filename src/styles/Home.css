@@ -1,0 +1,68 @@
+.home {
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 200px;
+	background-image: url("../static/Background.svg");
+}
+
+.home-header {
+	background-color: white;
+	width: fit-content;
+	margin-top: 150px;
+	padding: 20px;
+}
+
+.home-header h4 {
+	font-family: "GT Pressura Mono Text";
+	font-weight: normal;
+	font-style: italic;
+	font-size: 45px;
+	padding: 0;
+	margin: 0;
+}
+
+h1::selection,
+h4::selection,
+p::selection,
+a::selection,
+input::selection {
+	background-color: transparent;
+	color: #EB7A12;
+}
+
+h1 {
+	font-size: 200px;
+	font-weight: 500;
+	padding: 0;
+	margin: 0;
+}
+
+.explore-button {
+	background-color: white;
+	width: 250px;
+	height: 60px;
+	border: 2px solid black;
+	border-radius: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.explore-button a {
+	text-decoration: none;
+	color: black;
+	font-size: 30px;
+	-moz-transition: all 0.5s;
+	-webkit-transition: all 0.5s;
+	-o-transition: all 0.5s;
+	transition: all 0.5s;
+}
+
+.explore-button a:hover {
+	-webkit-transform: skewX(-20deg);
+	-moz-transform: skewX(-20deg);
+	-o-transform: skewX(-20deg);
+	transform: skewX(-20deg);
+}

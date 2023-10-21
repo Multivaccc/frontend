@@ -1,0 +1,153 @@
+@font-face {
+	font-family: "GT Planar";
+	src: url("/src/fonts/GT-Planar/GT-Planar-Black-Trial.otf") format("opentype");
+	font-weight: 900;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "GT Planar";
+	src: url("/src/fonts/GT-Planar/GT-Planar-Bold-Trial.otf") format("opentype");
+	font-weight: 700;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "GT Planar";
+	src: url("/src/fonts/GT-Planar/GT-Planar-Italic-15-Black-Trial.otf")
+		format("opentype");
+	font-weight: 900;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: "GT Planar";
+	src: url("/src/fonts/GT-Planar/GT-Planar-Italic-15-Bold-Trial.otf")
+		format("opentype");
+	font-weight: 700;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: "GT Planar";
+	src: url("/src/fonts/GT-Planar/GT-Planar-Italic-15-Light-Trial.otf")
+		format("opentype");
+	font-weight: 300;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: "GT Planar";
+	src: url("/src/fonts/GT-Planar/GT-Planar-Italic-15-Medium-Trial.otf")
+		format("opentype");
+	font-weight: 500;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: "GT Planar";
+	src: url("/src/fonts/GT-Planar/GT-Planar-Italic-15-Regular-Trial.otf")
+		format("opentype");
+	font-weight: 400;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: "GT Planar";
+	src: url("/src/fonts/GT-Planar/GT-Planar-Italic-15-Thin-Trial.otf")
+		format("opentype");
+	font-weight: 100;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: "GT Planar";
+	src: url("/src/fonts/GT-Planar/GT-Planar-Light-Trial.otf") format("opentype");
+	font-weight: 300;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "GT Planar";
+	src: url("/src/fonts/GT-Planar/GT-Planar-Medium-Trial.otf") format("opentype");
+	font-weight: 500;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "GT Planar";
+	src: url("/src/fonts/GT-Planar/GT-Planar-Regular-Trial.otf")
+		format("opentype");
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "GT Planar";
+	src: url("/src/fonts/GT-Planar/GT-Planar-Thin-Trial.otf") format("opentype");
+	font-weight: 100;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "GT Pressura Mono";
+	font-weight: 300;
+	src: url("/src/fonts/GT-Pressura/GT-Pressura-Mono-Light-Trial.otf")
+		format("opentype");
+}
+
+@font-face {
+	font-family: "GT Pressura Mono";
+	font-weight: 400;
+	src: url("/src/fonts/GT-Pressura/GT-Pressura-Mono-Regular-Trial.otf")
+		format("opentype");
+}
+
+@font-face {
+	font-family: "GT Pressura Mono";
+	font-weight: 500;
+	src: url("/src/fonts/GT-Pressura/GT-Pressura-Mono-Medium-Trial.otf")
+		format("opentype");
+}
+@font-face {
+	font-family: "GT Pressura Mono";
+	font-weight: 700;
+	src: url("/src/fonts/GT-Pressura/GT-Pressura-Mono-Bold-Trial.otf")
+		format("opentype");
+}
+
+@font-face {
+	font-family: "GT Pressura Mono Text";
+	font-weight: normal;
+	src: url("/src/fonts/GT-Pressura/GT-Pressura-Mono-Text-Trial.otf")
+		format("opentype");
+}
+
+@font-face {
+	font-family: "GT Pressura Mono Text";
+	font-weight: normal;
+	font-style: italic;
+	src: url("/src/fonts/GT-Pressura/GT-Pressura-Mono-Text-Italic-Trial.otf")
+		format("opentype");
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	font-family: "GT Planar";
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+h1 {
+	font-family: "GT Pressura Mono";
+}
+
+code {
+	font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+		monospace;
+}
