@@ -1,82 +1,69 @@
-import React, { FC } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../styles/Stories.css";
 
-type Title = string;
-type Author = string;
-type ID = string;
-
 type Story = {
-	title: Title;
-	author: Author;
-	id: ID;
-}
+	uuid: any;
+	name: string;
+	author: string;
+};
 
 const Home: FC = () => {
+	const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+	const [stories, setStories] = useState<Story[]>([]);
 
-	
-const stories: Story[] = [{
-						    title: "A Scandal in Bohemia",
-						    author: "Sir Arthur Conan Doyle",
-						    id: "1",
-						  },{
-						    title: "The Veldt",
-						    author: "Ray Bradbury",
-						    id: "2",
-						  },{
-						    title: "The Call of Cthulhu",
-						    author: "H.P. Lovecraft",
-						    id: "3",
-						  },{
-						    title: "The Lottery",
-						    author: "Shirley Jackson",
-						    id: "4",
-						  },{
-						    title: "The Tell-Tale Heart",
-						    author: "Edgar Allan Poe",
-						    id: "5",
-						  },{
-						    title: "The War of the Worlds",
-						    author: "H.G. Wells",
-						    id: "6",
-						  },{
-						    title: "The Yellow Wallpaper",
-						    author: "Charlotte Perkins Gilman",
-						    id: "7",
-						  },{
-						    title: "The Metamorphosis",
-						    author: "Franz Kafka",
-						    id: "8",
-						  },{
-						    title: "I, Robot",
-						    author: "Isaac Asimov",
-						    id: "9",
-						  },{
-						    title: "Fahrenheit 451",
-						    author: "Ray Bradbury",
-						    id: "10",
-						  }];
+	const getStories = async () => {
+		const response = await fetch(`${BACKEND_URL}/book/all/`, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
+		const data = await response.json();
+		const { books, status } = data;
+		if (status !== 200) {
+			console.error(status);
+		} else {
+			setStories(books);
+		}
+	};
+
+	useEffect(() => {
+		getStories();
+	}, []);
 
 	return (
 		<div className="stories">
 			<div className="stories-header">
 				<h1>Stories</h1>
-				<Link to="/">Back</Link>
+				<div className="back-button">
+					<Link to="/" className="back-button">
+						Back
+					</Link>
+				</div>
 			</div>
 			<div className="stories-container">
-				{stories.map((story : Story, id : number) =>
-					{
+				{stories.length ? (
+					stories.map((story: Story, id: number) => {
 						return (
-							<div className="story-link" key= {id}> 
-								<Link to={"/stories/"+story.id} state={{story : story}}>
-									{story.title}
+							<div className="story-link" key={id}>
+								<Link to={"/stories/" + story.uuid} state={{ story: story }}>
+									{story.name}
 								</Link>
 								<p>- {story.author}</p>
-							</div>	
-						)
+							</div>
+						);
 					})
-				}
-
+				) : (
+					<></>
+				)}
+				<div className="story-link">
+					<div className="upload-button">
+						<Link to="/upload">
+							<p>Add a Story</p>
+						</Link>
+					</div>
+				</div>
 			</div>
 		</div>
 	);

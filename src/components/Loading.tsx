@@ -1,0 +1,20 @@
+import React from "react";
+import "../styles/Loading.css";
+import { ThreeDots } from "react-loader-spinner";
+
+export default function Loading() {
+	return (
+		<div className="loading-page">
+			<ThreeDots
+				height={80}
+				width={80}
+				radius={9}
+				color="black"
+				ariaLabel="three-dots-loading"
+				wrapperStyle={{}}
+				wrapperClass=""
+				visible={true}
+			/>
+		</div>
+	);
+}

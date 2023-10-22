@@ -57,6 +57,7 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
+	overflow-wrap: break-word;
 }
 
 .story-progress {
@@ -92,7 +93,7 @@
 	white-space: pre-wrap;
 }
 
-.chat-message.system {
+.chat-message.agent {
 	text-align: left;
 }
 
@@ -108,7 +109,7 @@
 	margin: 20px 0px;
 }
 
-.chat-content img {
+.chat-message img {
 	width: 100%;
 	padding: 25px 0px;
 }
@@ -137,6 +138,7 @@
 	font-weight: 300;
 	font-size: 24px;
 	text-align: right;
+	width: 100%;
 }
 
 .input-message input:focus-visible {

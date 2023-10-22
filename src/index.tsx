@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./components/Home";
 import Stories from "./components/Stories";
 import Story from "./components/Story";
+import StoryUpload from "./components/StoryUpload";
 import "./index.css";
 
 const myRouter = createBrowserRouter([
@@ -12,16 +13,19 @@ const myRouter = createBrowserRouter([
 		element: <Home />,
 	},
 	{
+		path: "/upload",
+		element: <StoryUpload />,
+	},
+	{
 		path: "/stories",
 		element: <Stories />,
-	},{
-        path: "/stories/:id",
-        element: <Story/>,
-  }
+	},
+	{
+		path: "/stories/:id",
+		element: <Story />,
+	},
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-	<React.StrictMode>
-		<RouterProvider router={myRouter} />
-	</React.StrictMode>
+	<RouterProvider router={myRouter} />
 );

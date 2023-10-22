@@ -5,6 +5,7 @@
 	align-items: center;
 	gap: 200px;
 	background-image: url("../static/Background.svg");
+	background-size: cover;
 }
 
 .home-header {
@@ -29,7 +30,7 @@ p::selection,
 a::selection,
 input::selection {
 	background-color: transparent;
-	color: #EB7A12;
+	color: #eb7a12;
 }
 
 h1 {

@@ -1,18 +1,34 @@
 import React, { FC, useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { animateScroll as scroll } from "react-scroll";
-
 import "../styles/Story.css";
+import axios from "axios";
 
 interface ChatMessage {
-	type: "user" | "system" | "combined";
-	content: (string | JSX.Element)[];
+	type: "user" | "agent";
+	content: string;
+	imageURL?: string;
 }
 
 const Story: FC = () => {
-	const location = useLocation();
-	const { story } = location.state as any;
-	const { title, author, id } = story;
+	let location = useLocation();
+
+	const { story } = location?.state as any;
+	const { name, author, uuid } = story;
+	const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+
+	interface ImageProps {
+		imageURL?: string;
+	}
+
+	const Image: FC<ImageProps> = (data) => {
+		const { imageURL } = data;
+		return imageURL === "" ? (
+			<></>
+		) : (
+			<img className="ai-image" src={imageURL} alt="chat setting"></img>
+		);
+	};
 
 	const Chat = () => {
 		const [chat, setChat] = useState<ChatMessage[]>([]);
@@ -26,63 +42,76 @@ const Story: FC = () => {
 		};
 
 		const scrollToBottom = () => {
-			console.log("We should scroll");
 			scroll.scrollToBottom(scrollOptions);
 		};
 
-		useEffect(() => {
-			const firstMessage: ChatMessage = {
-				type: "system",
-				content: ["Welcome to " + title],
-			};
-			addRandomResponse(firstMessage);
-		}, []);
-
-		const addRandomResponse = (userMessage?: ChatMessage) => {
-			const randomResponse =
-				chatData[Math.floor(Math.random() * chatData.length)];
-
-			if (userMessage) {
-				setChat([...chat, userMessage, randomResponse]);
-			} else {
-				setChat([...chat, randomResponse]);
-			}
+		const getChat = async () => {
+			axios
+				.post(`${BACKEND_URL}/book/${uuid}/chat/`, {
+					headers: { "Content-Type": "application/json" },
+				})
+				.then((response) => {
+					setChat(response.data.log);
+					scrollToBottom();
+				})
+				.catch((error) => {
+					console.error(error);
+				});
 		};
+
+		const sendChat = (message: ChatMessage) => {
+			const chatData = { chat: message };
+			console.log(chatData);
+			axios
+				.post(`${BACKEND_URL}/book/${uuid}/chat/`, chatData, {
+					headers: { "Content-Type": "application/json" },
+				})
+				.then((response) => {
+					console.log(response);
+					setChat(response.data.log);
+					scrollToBottom();
+				})
+				.catch((error) => {
+					console.error(error);
+				});
+		};
+
+		useEffect(() => {
+			getChat();
+		}, []);
 
 		const handleSendMessage = () => {
 			if (message.trim() === "") return;
 
-			const userMessage: ChatMessage = { type: "user", content: [message] };
+			const userMessage: ChatMessage = {
+				type: "user",
+				content: message,
+				imageURL: "",
+			};
 			setMessage("");
 			setChat([...chat, userMessage]);
-
-			setTimeout(() => {
-				addRandomResponse(userMessage);
-				scrollToBottom();
-			}, 800);
+			sendChat(userMessage);
+			console.log(chat);
 		};
 
 		return (
 			<div className="story-chat" id="chat">
 				<div className="chat-container">
-					{chat.map((message, index) => (
-						<div
-							key={index}
-							className={`chat-message 
+					{chat.map((message, index) => {
+						return message.content !== "_" ? (
+							<div
+								key={index}
+								className={`chat-message 
                 ${message.type} 
                 ${message.type !== "user" ? " fade-in" : ""}`}
-						>
-							{message.content.map((content, i) => (
-								<div key={i} className="chat-content">
-									{typeof content === "string" ? (
-										<p key={index}>{content}</p>
-									) : (
-										content
-									)}
-								</div>
-							))}
-						</div>
-					))}
+							>
+								<Image imageURL={message.imageURL} />
+								<p key={index}>{message.content}</p>
+							</div>
+						) : (
+							<></>
+						);
+					})}
 				</div>
 				<div className="input-message" id="input">
 					<input
@@ -105,7 +134,7 @@ const Story: FC = () => {
 		<div className="story">
 			<div className="story-header">
 				<div className="story-card">
-					<h1>{title}</h1>
+					<h1>{name}</h1>
 					<h4>{author}</h4>
 				</div>
 				<Link to="/stories">Back</Link>
@@ -120,33 +149,3 @@ const Story: FC = () => {
 };
 
 export default Story;
-
-// Define your chat data
-const chatData: ChatMessage[] = [
-	{
-		type: "combined",
-		content: [
-			"Would you like to enter The Veldt?",
-			<img
-				src="https://images.squarespace-cdn.com/content/v1/557b6333e4b020deb8dc768c/1589939070426-DF5EC7MZ377S6TOJ5Y8F/Inspirational-retro-futuristic-living-room-ideas_3.jpg"
-				alt="The Nursery"
-			/>,
-		],
-	},
-	{
-		type: "combined",
-		content: [
-			<img
-				src="https://ficinc.com/wp-content/uploads/veldt-annd-banks-adaptability.jpg"
-				alt="The Veldt"
-			/>,
-			"You enter the nursery. The hot straw smell of lion grass surrounds you. In the distance, lions feed on a fresh zebra kill. Lydia is distressed, insisting the projections have become too realistic.",
-		],
-	},
-	{
-		type: "system",
-		content: [
-			"Now the hidden odorophonics were beginning to blow a wind of odor at the two people in the middle of the baked veldtland.\n\n The hot straw smell of lion grass, the cool green smell of the hidden water hole, the great rusty smell of animals, the smell of dust like a red paprika in the hot air. \n\n And now the sounds: the thump of distant antelope feet on grassy sod, the papery rustling of vultures. A shadow passed through the sky. The shadow flickered on George Hadley’s upturned, sweating face. “Filthy creatures,” he heard his wife say.",
-		],
-	},
-];

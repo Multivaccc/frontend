@@ -1,0 +1,10 @@
+.loading-page {
+	height: 90vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-image: url("../static/StoryBackground.svg");
+	background-repeat: no-repeat;
+	padding: 50px 0px;
+	background-size: cover;
+}
