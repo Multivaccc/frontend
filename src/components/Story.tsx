@@ -141,8 +141,8 @@ const Story: FC = () => {
 			</div>
 			<Chat />
 			<div className="story-progress">
-				<h1>Progress</h1>
-				<h1 style={{ fontSize: "40px" }}>30%</h1>
+				{/* <h1>Progress</h1>
+				<h1 style={{ fontSize: "40px" }}>30%</h1> */}
 			</div>
 		</div>
 	);
