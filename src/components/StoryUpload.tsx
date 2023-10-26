@@ -4,23 +4,38 @@ import "../styles/StoryUpload.css";
 import axios from "axios";
 import Loading from "./Loading";
 
+interface ChatProps {
+	author: string;
+	uuid: any;
+	name: string;
+}
+
 const StoryUpload: FC = () => {
 	const [title, setTitle] = useState<string>("");
 	const [author, setAuthor] = useState<string>("");
 	const [filename, setFilename] = useState<string>("");
 	const [file, setFile] = useState<File>();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
-
+	const [loadingMessage, setLoadingMessage] = useState<string>("");
 	const navigate = useNavigate();
 	const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
+	const getChat = async (book: ChatProps) => {
+		axios
+			.post(`${BACKEND_URL}/book/${book.uuid}/chat/`, {
+				headers: { "Content-Type": "application/json" },
+			})
+			.then()
+			.catch((error) => {
+				console.error(error);
+			});
+	};
+
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		console.log(file);
 		const formData = { name: title, author: author, file };
-		console.log(formData);
 		setIsLoading(true);
-
+		setLoadingMessage("Reading the story");
 		axios
 			.post(`${BACKEND_URL}/book/`, formData, {
 				headers: {
@@ -30,7 +45,9 @@ const StoryUpload: FC = () => {
 			.then((response) => {
 				const { book, status } = response.data;
 				const { author, uuid, name } = book;
-
+				setLoadingMessage("Succesfully read story. Initializing story setting");
+				getChat(book);
+				setLoadingMessage("Done!");
 				setIsLoading(false);
 				navigate(`/stories/${uuid}`, {
 					state: { story: { name: name, uuid: uuid, author: author } },
@@ -56,26 +73,23 @@ const StoryUpload: FC = () => {
 		if (value !== null) {
 			setFilename(value[0]?.name);
 			setFile(value[0]);
-			console.log(value);
 		}
 	};
 
 	return isLoading ? (
-		<Loading />
+		<Loading message={loadingMessage} />
 	) : (
 		<div className="story-upload">
 			<div className="stories-header">
-				<h1>Stories</h1>
+				<h1>Upload</h1>
 				<div className="back-button">
 					<Link to="/stories">Back</Link>
 				</div>
 			</div>
-			<h4>Upload a story</h4>
 			<form
 				className="story-upload-container"
 				onSubmit={(e) => handleSubmit(e)}
 			>
-				{/* {success ? <Navigate to="/stories" replace={true} /> : <></>} */}
 				<div className="form-item">
 					<label>Title: </label>
 					<input

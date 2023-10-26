@@ -1,6 +1,7 @@
 import React, { FC, useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { animateScroll as scroll } from "react-scroll";
+import Loading from "./Loading";
 import "../styles/Story.css";
 import axios from "axios";
 
@@ -10,16 +11,63 @@ interface ChatMessage {
 	imageURL?: string;
 }
 
+interface ImageProps {
+	imageURL?: string;
+}
+
 const Story: FC = () => {
 	let location = useLocation();
 
 	const { story } = location?.state as any;
 	const { name, author, uuid } = story;
 	const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+	const [chat, setChat] = useState<ChatMessage[]>([]);
+	const [message, setMessage] = useState<string>("");
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
-	interface ImageProps {
-		imageURL?: string;
-	}
+	const scrollOptions = {
+		duration: 350,
+		smooth: true,
+		delay: 0,
+		isDynamic: true,
+	};
+
+	const scrollToBottom = () => {
+		scroll.scrollToBottom(scrollOptions);
+	};
+
+	const getChat = async () => {
+		axios
+			.post(`${BACKEND_URL}/book/${uuid}/chat/`, {
+				headers: { "Content-Type": "application/json" },
+			})
+			.then((response) => {
+				setChat(response.data.log);
+				scrollToBottom();
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+	};
+
+	const sendChat = (message: ChatMessage) => {
+		const chatData = { chat: message };
+		axios
+			.post(`${BACKEND_URL}/book/${uuid}/chat/`, chatData, {
+				headers: { "Content-Type": "application/json" },
+			})
+			.then((response) => {
+				setChat(response.data.log);
+				scrollToBottom();
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+	};
+
+	useEffect(() => {
+		getChat();
+	}, []);
 
 	const Image: FC<ImageProps> = (data) => {
 		const { imageURL } = data;
@@ -31,55 +79,6 @@ const Story: FC = () => {
 	};
 
 	const Chat = () => {
-		const [chat, setChat] = useState<ChatMessage[]>([]);
-		const [message, setMessage] = useState<string>("");
-
-		const scrollOptions = {
-			duration: 350,
-			smooth: true,
-			delay: 0,
-			isDynamic: true,
-		};
-
-		const scrollToBottom = () => {
-			scroll.scrollToBottom(scrollOptions);
-		};
-
-		const getChat = async () => {
-			axios
-				.post(`${BACKEND_URL}/book/${uuid}/chat/`, {
-					headers: { "Content-Type": "application/json" },
-				})
-				.then((response) => {
-					setChat(response.data.log);
-					scrollToBottom();
-				})
-				.catch((error) => {
-					console.error(error);
-				});
-		};
-
-		const sendChat = (message: ChatMessage) => {
-			const chatData = { chat: message };
-			console.log(chatData);
-			axios
-				.post(`${BACKEND_URL}/book/${uuid}/chat/`, chatData, {
-					headers: { "Content-Type": "application/json" },
-				})
-				.then((response) => {
-					console.log(response);
-					setChat(response.data.log);
-					scrollToBottom();
-				})
-				.catch((error) => {
-					console.error(error);
-				});
-		};
-
-		useEffect(() => {
-			getChat();
-		}, []);
-
 		const handleSendMessage = () => {
 			if (message.trim() === "") return;
 
@@ -91,7 +90,6 @@ const Story: FC = () => {
 			setMessage("");
 			setChat([...chat, userMessage]);
 			sendChat(userMessage);
-			console.log(chat);
 		};
 
 		return (
@@ -101,17 +99,22 @@ const Story: FC = () => {
 						return message.content !== "_" ? (
 							<div
 								key={index}
-								className={`chat-message 
-                ${message.type} 
-                ${message.type !== "user" ? " fade-in" : ""}`}
+								className={`chat-message ${
+									message.type !== "user"
+										? message.type + " fade-in"
+										: message.type
+								}`}
 							>
 								<Image imageURL={message.imageURL} />
 								<p key={index}>{message.content}</p>
 							</div>
-						) : (
-							<></>
-						);
+						) : null;
 					})}
+					{isLoading ? (
+						<div key={chat.length} className="chat-message">
+							<Loading></Loading>
+						</div>
+					) : null}
 				</div>
 				<div className="input-message" id="input">
 					<input

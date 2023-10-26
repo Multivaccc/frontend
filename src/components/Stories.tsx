@@ -12,33 +12,6 @@ const Home: FC = () => {
 	const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 	const [stories, setStories] = useState<Story[]>([]);
 
-	const mockStories = [
-		{
-			name: "The Call of Cthulhu",
-			author: "H.P. Lovecraft",
-			uuid: "3",
-		},
-		{
-			name: "The War of the Worlds",
-			author: "H.G. Wells",
-			uuid: "6",
-		},
-		{
-			name: "The Metamorphosis",
-			author: "Franz Kafka",
-			uuid: "8",
-		},
-		{
-			name: "I, Robot",
-			author: "Isaac Asimov",
-			uuid: "9",
-		},
-		{
-			name: "Fahrenheit 451",
-			author: "Ray Bradbury",
-			uuid: "10",
-		},
-	];
 	const getStories = async () => {
 		const response = await fetch(`${BACKEND_URL}/book/all/`, {
 			method: "GET",
@@ -70,16 +43,6 @@ const Home: FC = () => {
 				</div>
 			</div>
 			<div className="stories-container">
-				{mockStories.map((story: Story, id: number) => {
-					return (
-						<div className="story-link" key={id}>
-							<Link to={"/stories/" + story.uuid} state={{ story: story }}>
-								{story.name}
-							</Link>
-							<p>- {story.author}</p>
-						</div>
-					);
-				})}
 				{stories.length ? (
 					stories.map((story: Story, id: number) => {
 						return (
